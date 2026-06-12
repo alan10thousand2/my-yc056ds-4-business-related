@@ -1,0 +1,1115 @@
+<!doctype html>
+<html lang="zh-HK">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>AGSO 禮賓司 · 住戶及證件對話全集 | 專業整合筆記（含天氣提醒）</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Segoe UI",
+          "Roboto",
+          "Noto Sans TC",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: #f0f4f9;
+        color: #1e2a3a;
+        line-height: 1.45;
+      }
+
+      /* 整體佈局 */
+      .app {
+        display: flex;
+        min-height: 100vh;
+        width: 100%;
+      }
+
+      /* 側邊欄 - AGSO專業風格 */
+      .sidebar {
+        width: 280px;
+        background: linear-gradient(145deg, #1c2e3f 0%, #0e1e2c 100%);
+        color: #eef4fc;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        box-shadow: 3px 0 18px rgba(0, 0, 0, 0.1);
+        flex-shrink: 0;
+        transition: all 0.2s;
+        z-index: 10;
+      }
+
+      .sidebar-header {
+        padding: 2rem 1.5rem 1rem 1.5rem;
+        border-bottom: 1px solid rgba(255, 215, 140, 0.25);
+        margin-bottom: 1.2rem;
+      }
+
+      .sidebar-header h2 {
+        font-size: 1.7rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #ffe2a4, #e2b870);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        letter-spacing: -0.2px;
+      }
+
+      .sidebar-header p {
+        font-size: 0.75rem;
+        opacity: 0.8;
+        margin-top: 0.3rem;
+      }
+
+      .filter-menu {
+        list-style: none;
+        padding: 0 1rem 2rem 1rem;
+      }
+
+      .filter-btn {
+        width: 100%;
+        text-align: left;
+        background: transparent;
+        border: none;
+        padding: 0.8rem 1.2rem;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #e2edf5;
+        border-radius: 40px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: inherit;
+        margin-bottom: 0.4rem;
+      }
+
+      .filter-btn .emoji {
+        font-size: 1.3rem;
+      }
+
+      .filter-btn:hover {
+        background: rgba(255, 215, 140, 0.2);
+        color: #ffdfaa;
+        transform: translateX(4px);
+      }
+
+      .filter-btn.active {
+        background: #e2b870;
+        color: #1a2f3a;
+        font-weight: 700;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      /* 主內容區 */
+      .main {
+        flex: 1;
+        background: #fefefe;
+        padding: 2rem 2rem 3rem 2rem;
+        overflow-y: auto;
+      }
+
+      .page-header {
+        margin-bottom: 2rem;
+        border-left: 5px solid #e2b870;
+        padding-left: 1.2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .page-header h1 {
+        font-size: 1.9rem;
+        font-weight: 700;
+        color: #1c4b3c;
+      }
+
+      .badge {
+        background: #eef2f0;
+        padding: 0.3rem 1rem;
+        border-radius: 40px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #2c6e5a;
+      }
+
+      /* 卡片網格 */
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+        gap: 1.6rem;
+      }
+
+      .dialogue-card {
+        background: white;
+        border-radius: 28px;
+        box-shadow:
+          0 8px 20px rgba(0, 0, 0, 0.03),
+          0 2px 6px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s;
+        border: 1px solid #e7edf2;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .dialogue-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 20px 28px -12px rgba(0, 0, 0, 0.12);
+        border-color: #e2b87080;
+      }
+
+      .card-header {
+        background: #fefaf2;
+        padding: 0.9rem 1.2rem;
+        border-bottom: 1px solid #f0e2ce;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .card-title {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: #a5642c;
+        background: #fff0e0;
+        padding: 0.2rem 0.8rem;
+        border-radius: 30px;
+      }
+
+      .tag-group {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .tag {
+        font-size: 0.7rem;
+        background: #eef2f8;
+        padding: 0.2rem 0.7rem;
+        border-radius: 30px;
+        color: #3a5c6e;
+      }
+
+      .tag-source {
+        background: #e9e0d0;
+        color: #7d6139;
+      }
+
+      .card-body {
+        padding: 1.2rem 1.2rem 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .dialog-zh {
+        background: #fefbf6;
+        border-left: 4px solid #e2b870;
+        padding: 0.8rem 1rem;
+        border-radius: 20px;
+        font-size: 0.93rem;
+        line-height: 1.5;
+      }
+
+      .dialog-en {
+        background: #f5f9fe;
+        border-left: 4px solid #7c9ebf;
+        padding: 0.8rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        color: #2c4e6b;
+      }
+
+      .small-meta {
+        font-size: 0.7rem;
+        color: #9faaaf;
+        text-align: right;
+        margin-top: 0.5rem;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 4rem;
+        background: #fefcf7;
+        border-radius: 2rem;
+        color: #8f9eae;
+      }
+
+      footer {
+        margin-top: 3rem;
+        text-align: center;
+        font-size: 0.75rem;
+        color: #9dafbd;
+        border-top: 1px solid #e2e8f0;
+        padding-top: 1.8rem;
+      }
+
+      @media (max-width: 760px) {
+        .app {
+          flex-direction: column;
+        }
+        .sidebar {
+          width: 100%;
+          height: auto;
+          position: relative;
+        }
+        .filter-menu {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.4rem;
+          padding: 0 1rem 1rem;
+        }
+        .filter-btn {
+          width: auto;
+          padding: 0.5rem 1rem;
+          font-size: 0.85rem;
+        }
+        .main {
+          padding: 1.5rem;
+        }
+        .cards-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #e9ecef;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2>🏨 AGSO 禮賓司</h2>
+          <p>住戶 · 證件 · 業戶 · 租戶 · 天氣提醒</p>
+          <p style="font-size: 0.7rem; margin-top: 0.5rem">
+            整合自登記/投訴/借用/表格/拒絕/查詢/天氣六大模組
+          </p>
+        </div>
+        <ul class="filter-menu" id="filterMenu">
+          <li>
+            <button class="filter-btn active" data-filter="all">
+              <span class="emoji">📋</span> 全部對話
+            </button>
+          </li>
+          <li>
+            <button class="filter-btn" data-filter="resident">
+              <span class="emoji">🏠</span> 住戶 (一般查詢/投訴/借用)
+            </button>
+          </li>
+          <li>
+            <button class="filter-btn" data-filter="residentcard">
+              <span class="emoji">🪪</span> 住戶證相關
+            </button>
+          </li>
+          <li>
+            <button class="filter-btn" data-filter="owner">
+              <span class="emoji">👑</span> 業戶 (業主)
+            </button>
+          </li>
+          <li>
+            <button class="filter-btn" data-filter="tenant">
+              <span class="emoji">📄</span> 租戶
+            </button>
+          </li>
+          <li>
+            <button class="filter-btn" data-filter="weather">
+              <span class="emoji">🌤️</span> 天氣提醒
+            </button>
+          </li>
+        </ul>
+        <div
+          style="
+            padding: 1rem;
+            font-size: 0.7rem;
+            opacity: 0.7;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 240, 0.1);
+          "
+        >
+          ✨ 匯璽物管培訓專用 · 中英對照 ✨<br />專業禮賓對話＋天氣應對提醒
+        </div>
+      </aside>
+
+      <main class="main" id="mainContent">
+        <div class="page-header">
+          <h1>
+            📔 住戶及證件對話全集
+            <span class="badge" id="counterSpan">載入中</span>
+          </h1>
+        </div>
+        <div id="cardsContainer" class="cards-grid">
+          <div class="empty-state">✨ 正在整理專業對話 ...</div>
+        </div>
+        <footer>
+          AGSO 禮賓司 · 整合所有住戶/住戶證/業戶/租戶/天氣雙語對話 |
+          物業管理實戰應對
+        </footer>
+      </main>
+    </div>
+
+    <script>
+      // ============================================================
+      // 完整資料庫：原有六大模組 + 新增天氣提醒模組 (weather)
+      // ============================================================
+      const allDialogues = [
+        // ------------------- 登記.html (residentcard + 綜合查詢住戶) ------------------
+        {
+          id: "reg01",
+          group: "residentcard",
+          title: "新住戶入住 · 住戶証申請",
+          chinese:
+            "禮賓司：「歡迎您入住。請提供租約或買賣合約、住戶身份證明及大廈住戶登記表。我哋會為您家人辦理住戶証，一般三個工作天內可取。如有需要，可申請臨時通行證。」",
+          english:
+            'Concierge: "Welcome to the building. Please provide your tenancy agreement or sale and purchase contract, identification documents for all residents, and the resident registration form. We will issue resident passes for your family, usually ready within three working days. A temporary pass is available upon request."',
+          source: "登記·住戶証",
+        },
+        {
+          id: "reg02",
+          group: "residentcard",
+          title: "傭人或司機證件申請",
+          chinese:
+            "禮賓司：「陳太，請問您嘅家傭是否需要獨立住戶証？請填寫僱傭合約副本同佢嘅證件相片。我哋會記錄為『傭工証』，用途只限進出大廈及使用公共設施。」",
+          english:
+            "Concierge: \"Mrs. Chan, would your domestic helper need a separate resident pass? Please provide a copy of the employment contract and her photo. We will issue a 'Helper Pass' which allows access to the building and common areas only.\"",
+          source: "登記·住戶証",
+        },
+        {
+          id: "reg03",
+          group: "residentcard",
+          title: "補辦遺失住戶証",
+          chinese:
+            "住戶：「我唔見咗住戶証，可唔可以補辦？」\n禮賓司：「當然可以，先生。請出示身份證明文件，並填寫遺失申報表。補辦費用為港幣五十元，新証將於兩個工作天後備妥。舊証會即時註銷。」",
+          english:
+            'Resident: "I have lost my resident pass. Can I get a replacement?"\nConcierge: "Certainly, sir. Please present your identification and fill out a loss declaration form. The replacement fee is HKD 50, and the new pass will be ready in two working days. The lost pass will be deactivated immediately."',
+          source: "登記·住戶証",
+        },
+        {
+          id: "reg04",
+          group: "residentcard",
+          title: "為親友申請臨時住戶証",
+          chinese:
+            "住戶：「我父母由外地嚟住一個月，點樣申請臨時住戶証？」\n禮賓司：「李小姐，請您填寫訪客登記表，並提供您父母嘅證件副本。我哋會發出有效期一個月嘅臨時証，方便佢哋進出大堂同使用會所設施。多謝查詢。」",
+          english:
+            'Resident: "My parents are visiting from overseas for a month. How can I apply for temporary resident passes?"\nConcierge: "Ms. Li, please fill out a visitor registration form and provide copies of your parents\' identification. We will issue temporary passes valid for one month, allowing them to access the lobby and clubhouse facilities. Thank you for your enquiry."',
+          source: "登記·住戶証",
+        },
+        {
+          id: "reg05",
+          group: "residentcard",
+          title: "查詢住戶証審批進度",
+          chinese:
+            "住戶：「我上星期遞交咗住戶証申請，請問處理成點？」\n禮賓司：「陳先生，請稍等，我幫您查閱系統。……多謝等候，申請已經批核，今日下午三點後可以到禮賓部領取証件。請攜帶收據前來。」",
+          english:
+            'Resident: "I submitted my resident pass application last week. What is the status?"\nConcierge: "Mr. Chan, please allow me to check the system. … Thank you for waiting. The application has been approved, and you can collect the pass from the concierge after 3pm today. Please bring the receipt."',
+          source: "登記·住戶証",
+        },
+        {
+          id: "reg06",
+          group: "residentcard",
+          title: "住戶証使用範圍及到期日",
+          chinese:
+            "住戶：「唔該，我想知張住戶証除咗大堂仲可以去邊度？同埋幾時到期？」\n禮賓司：「先生，住戶証可通往地下大堂、各層升降機、會所及停車場（如有登記車輛）。有效期標示於証件背面，通常為兩年。到期前一個月我哋會通知續期。」",
+          english:
+            'Resident: "Excuse me, where can I use this resident pass besides the lobby? And when does it expire?"\nConcierge: "Sir, the resident pass grants access to the ground floor lobby, all residential lifts, the clubhouse, and the carpark (if a vehicle is registered). The expiry date is printed on the back, typically valid for two years. We will notify you one month before expiry for renewal."',
+          source: "登記·住戶証",
+        },
+        {
+          id: "reg07",
+          group: "resident",
+          title: "綜合查詢 · 住戶查詢裝修工人登記",
+          chinese:
+            "住戶：「我想裝修，工人需要做咩登記？」\n禮賓司：「王先生，多謝查詢。請你先填寫裝修申請表，提交裝修公司資料及保險副本。之後每位工人首次進場時需出示身份證登記，我哋會發放工人證，有效期同裝修期一致。如有搭棚或搬運大型物料，需個別申請許可。」",
+          english:
+            'Resident: "I want to renovate my flat. What registration is required for workers?"\nConcierge: "Mr. Wong, thank you for your enquiry. Please first fill out a renovation application form and submit the contractor\'s details and insurance copy. Then each worker must present their ID for registration on the first day, and we will issue a worker pass valid for the renovation period. For scaffolding or large material handling, separate permits are required."',
+          source: "登記·綜合",
+        },
+
+        // ------------------- 投訴1.html (住戶 resident 投訴) ------------------
+        {
+          id: "comp01",
+          group: "resident",
+          title: "亂拋煙頭落晾衫架",
+          chinese:
+            "業戶：「低層單位經常有住戶把煙頭扔出窗外，掉在我晾衫架上。」\n禮賓司：「張小姐，您的投訴我們非常重視。我們會加強通告及巡查，並嘗試找出涉事單位作勸喻。同時會在大堂貼出溫馨提示，感謝您反映。」",
+          english:
+            'Resident: "A resident in a upper unit often throws cigarette butts out of the window onto my laundry rack."\nConcierge: "Ms. Cheung, We take your complaint very seriously. We will strengthen notices and patrols, try to identify the unit involved for advice, and post a friendly reminder in the lobby. Thank you for reporting."',
+          source: "投訴·住戶",
+        },
+        {
+          id: "comp02",
+          group: "resident",
+          title: "寵物隨處便溺",
+          chinese:
+            "業戶：「有住戶放狗唔清理糞便，走廊成日有異味。」\n禮賓司：「羅小姐，我們會翻查閉路電視，如發現特定住戶會作出勸喻。同時會張貼告示提醒所有寵物主人保持清潔。感謝您的反映。」",
+          english:
+            'Resident: "Some residents don\'t clean up after their dogs; the corridor often smells bad."\nConcierge: "We will review the CCTV footage and advise specific residents if found. We will also post notices reminding all pet owners to keep the area clean. Thank you for reporting."',
+          source: "投訴·住戶",
+        },
+        {
+          id: "comp03",
+          group: "resident",
+          title: "深夜派對噪音",
+          chinese:
+            "業戶：「樓上單位凌晨仲開 party，音樂聲同叫囂聲令我瞓唔到。」\n禮賓司：「葉小姐，我們已派保安員上樓了解。如情況持續，我們會按程序報警處理。請您先保持冷靜，我們會盡力協調。」",
+          english:
+            'Resident: "The unit upstairs is still having a party at midnight; the music and shouting keep me awake."\nConcierge: "We have sent a security guard to investigate. If the situation continues, we will follow procedure to call the police. Please stay calm; we will do our best to mediate."',
+          source: "投訴·住戶",
+        },
+        {
+          id: "comp04",
+          group: "resident",
+          title: "高空擲物",
+          chinese:
+            "業戶：「有住戶將成袋垃圾掟落街，差啲掟中我架車。」\n禮賓司：「黃生，高空擲物屬刑事罪行。我們會翻查高空鏡頭，如鎖定單位會即時報警及向該住戶提出檢控。多謝您提供時間及位置。」",
+          english:
+            'Resident: "A resident threw a whole bag of rubbish out of the window, nearly hitting my car."\nConcierge: "Littering from height is a criminal offence. We will review the sky cameras; if we identify the unit, we will immediately call the police and initiate prosecution. Thank you for providing the time and location."',
+          source: "投訴·住戶",
+        },
+        {
+          id: "comp05",
+          group: "resident",
+          title: "走廊燃燒冥鏹",
+          chinese:
+            "業戶：「有住戶喺走廊燒衣紙，煙霧瀰漫，觸動咗煙霧感應器。」\n禮賓司：「梁太，我哋會即時派員勸止，並提醒該住戶必須使用化寶桶及於室外指定地點進行。多謝您嘅體諒同配合。」",
+          english:
+            'Resident: "A resident is burning incense papers in the corridor; the smoke is thick and has triggered the smoke detector."\nConcierge: "We will immediately send someone to stop it and remind the resident to use a designated burning bin in the approved outdoor area. Thank you for your understanding and cooperation."',
+          source: "投訴·住戶",
+        },
+        {
+          id: "comp06",
+          group: "resident",
+          title: "難聞化學氣味",
+          chinese:
+            "業戶：「鄰居單位傳出強烈化學品氣味，我擔心有危險。」\n禮賓司：「彭生，這可能涉及危險物品。我們會即時上門調查，如有需要會通知消防處。請您暫時關閉門窗，我們會盡快處理。」",
+          english:
+            'Resident: "There\'s a strong chemical smell coming from a neighbour\'s unit; I\'m worried it might be dangerous."\nConcierge: "This may involve hazardous substances. We will investigate immediately and notify the Fire Services Department if necessary. Please close your windows and doors temporarily; we will handle it as soon as possible."',
+          source: "投訴·住戶",
+        },
+        {
+          id: "comp07",
+          group: "resident",
+          title: "孩童走廊追逐",
+          chinese:
+            "業戶：「有住戶嘅細路喺走廊跑嚟跑去，大聲叫喊，又驚佢哋撞到人。」\n禮賓司：「尤太，我們會聯絡該住戶的家長，提醒他們注意安全及避免滋擾鄰居。同時會在兒童遊樂區張貼使用規則。多謝您關心。」",
+          english:
+            'Resident: "Some residents\' children are running and shouting in the corridor; I\'m worried they might bump into someone."\nConcierge: "We will contact the parents to remind them about safety and avoiding disturbance to neighbours. We will also post rules in the children\'s play area. Thank you for your concern."',
+          source: "投訴·住戶",
+        },
+        {
+          id: "comp08",
+          group: "resident",
+          title: "升降機內吸煙",
+          chinese:
+            "業戶：「有住戶喺升降機入面食煙，成個廂都係煙味。」\n禮賓司：「倪小姐，我們會翻查閉路電視，向該住戶發警告信。同時會在升降機內張貼禁煙標誌及相關法例條文。多謝您舉報。」",
+          english:
+            'Resident: "A resident is smoking inside the lift; the whole cabin smells of smoke."\nConcierge: "We will review CCTV and issue a warning letter to that resident. We will also post no-smoking signs and relevant legal provisions inside the lift. Thank you for reporting."',
+          source: "投訴·住戶",
+        },
+        {
+          id: "comp09",
+          group: "resident",
+          title: "深夜打麻將噪音",
+          chinese:
+            "業戶：「樓下單位凌晨兩點重喺度打麻雀，洗牌聲好嘈。」\n禮賓司：「紀先生，我們已派保安員上門勸喻。如果對方不合作，我們會按噪音管制條例協助您報警。請您稍等，我們會跟進。」",
+          english:
+            'Resident: "The unit downstairs is still playing mahjong at 2am; the shuffling noise is very loud."\nConcierge: "We have sent a security guard to advise them. If they do not cooperate, we will assist you in calling the police under the Noise Control Ordinance. Please bear with us; we will follow up."',
+          source: "投訴·住戶",
+        },
+        {
+          id: "comp10",
+          group: "resident",
+          title: "花園燒烤濃煙",
+          chinese:
+            "業戶：「地下花園有住戶燒烤，啲煙攻到上十樓。」\n禮賓司：「儲生，大廈公契可能禁止燒烤，或只可在指定區域進行。我們會即時勸止，並提醒相關住戶遵守規定。影響到您，真係唔好意思。」",
+          english:
+            'Resident: "A resident is barbecuing in the ground floor garden; the smoke is rising up to the 10th floor."\nConcierge: "The DMC may prohibit barbecuing, or only allow it in designated areas. We will immediately stop them and remind the resident to follow the rules. We apologise for the disturbance."',
+          source: "投訴·住戶",
+        },
+
+        // ------------------- 物品借用.html (住戶) ------------------
+        {
+          id: "borrow01",
+          group: "resident",
+          title: "借用雨傘",
+          chinese:
+            "陳太，外面正下雨，我們有雨傘可供借用，請您先用，回來時歸還便可。",
+          english:
+            "Mrs. Chan, it is raining outside. We have umbrellas available for borrowing. Please feel free to use one and return it when you come back.",
+          source: "物品借用·住戶",
+        },
+        {
+          id: "borrow02",
+          group: "resident",
+          title: "借用血壓計",
+          chinese:
+            "李生，我們備有血壓計可供住戶借用，如您需要測量血壓，請隨時向我們索取。",
+          english:
+            "Mr. Li, we have a blood pressure monitor available for residents. Please feel free to ask us if you need to check your blood pressure.",
+          source: "物品借用·住戶",
+        },
+        {
+          id: "borrow03",
+          group: "resident",
+          title: "免費借用輪椅",
+          chinese:
+            "您好，如果需要協助長者或行動不便的家人出入，我們提供輪椅免費借用。",
+          english:
+            "Hello, if you need assistance for an elderly or mobility-impaired family member, we offer wheelchairs for free borrowing.",
+          source: "物品借用·住戶",
+        },
+        {
+          id: "borrow04",
+          group: "resident",
+          title: "縫紉工具包借用",
+          chinese: "太太，臨時需要針線修補衣物？我們備有縫紉工具包，歡迎借用。",
+          english:
+            "Madam, do you need a needle and thread for a quick clothing repair? We have a sewing kit available for borrowing.",
+          source: "物品借用·住戶",
+        },
+        {
+          id: "borrow05",
+          group: "resident",
+          title: "急救箱借用",
+          chinese:
+            "先生，如果家中發生輕微意外，我們有急救箱可供借用，內有消毒用品及膠布。",
+          english:
+            "Sir, if a minor accident happens at home, we have a first-aid kit for borrowing, containing antiseptics and bandages.",
+          source: "物品借用·住戶",
+        },
+
+        // ------------------- 表格申請.html (住戶證相關) ------------------
+        {
+          id: "form01",
+          group: "residentcard",
+          title: "住戶證申請表",
+          chinese:
+            "業戶：「我剛搬進來，如何為家人申請住戶證？」\n禮賓司：「歡迎您！請填寫《住戶證申請表》，並提供住戶身份證明文件副本及一張近照。我會在三個工作天內為您辦妥，完成後通知您領取。」",
+          english:
+            'Resident: "I just moved in. How can I apply for resident cards for my family?"\nConcierge: "Welcome! Please fill out the Resident Card Application Form and provide a copy of the resident\'s identification document and one recent photo. I will process it within three working days and notify you when the cards are ready for collection."',
+          source: "表格申請·住戶證",
+        },
+        {
+          id: "form02",
+          group: "residentcard",
+          title: "臨時住戶證申請",
+          chinese:
+            "業戶：「我的親友會暫住兩星期，可否為他們申請臨時住戶證？」\n禮賓司：「可以。請填寫《臨時住戶證申請表》，提供親友的身份證明及您的住戶資料。臨時證有效期最長一個月，到期請歸還，謝謝。」",
+          english:
+            'Resident: "My relatives will be staying with me for two weeks. Can I apply for temporary resident cards for them?"\nConcierge: "Yes. Please fill out the Temporary Resident Card Application Form and provide your relatives\' identification and your own resident details. The temporary pass is valid for up to one month. Please return it upon expiry. Thank you."',
+          source: "表格申請·住戶證",
+        },
+        {
+          id: "form03",
+          group: "residentcard",
+          title: "遺失住戶證補領",
+          chinese:
+            "業戶：「我不小心遺失了住戶證，請問如何補領？」\n禮賓司：「請別擔心。請填寫《遺失住戶證補領申請表》，並支付少量行政費用。我們會先取消舊證，再為您製作新證，大約需時兩個工作天。期間可先用臨時紙本證明。」",
+          english:
+            'Resident: "I accidentally lost my resident card. How can I get a replacement?"\nConcierge: "Please don\'t worry. Fill out the Lost Resident Card Replacement Application Form and pay a small administrative fee. We will cancel the old card and issue a new one for you, which takes about two working days. In the meantime, you may use a temporary paper pass."',
+          source: "表格申請·住戶證",
+        },
+        {
+          id: "form04",
+          group: "residentcard",
+          title: "住戶證更換相片",
+          chinese:
+            "業戶：「我的住戶證相片太舊了，想更換新相片，可以嗎？」\n禮賓司：「當然可以。請填寫《住戶證資料更改申請表》，並提交一張新近照。我們會為您重新製證，舊證需同時交回。費用全免。」",
+          english:
+            'Resident: "The photo on my resident card is too old. Can I change it to a new one?"\nConcierge: "Certainly. Please fill out the Resident Card Information Change Application Form and submit one recent photo. We will reissue the card for you, and the old card must be returned. There is no charge."',
+          source: "表格申請·住戶證",
+        },
+        {
+          id: "form05",
+          group: "residentcard",
+          title: "住戶證更改地址",
+          chinese:
+            "業戶：「我剛從A座搬去B座，住戶證需要更改地址嗎？」\n禮賓司：「恭喜搬新單位！請填寫《住戶證資料更改申請表》，並提供新單位的租約或業權證明。我們會免費為您更新證件上的地址資料。」",
+          english:
+            'Resident: "I just moved from Block A to Block B. Do I need to update the address on my resident card?"\nConcierge: "Congratulations on your new unit! Please fill out the Resident Card Information Change Application Form and provide the tenancy agreement or proof of ownership for the new unit. We will update the address on your card free of charge."',
+          source: "表格申請·住戶證",
+        },
+        {
+          id: "form06",
+          group: "residentcard",
+          title: "住戶證遺失臨時通行",
+          chinese:
+            "業戶：「我的住戶證遺失了，但今天需要進出多次，怎麼辦？」\n禮賓司：「請不用擔心。請填寫《臨時通行記錄表》，我們會核對您的身份並發給您一張當日有效的臨時紙條。每次進出請向保安出示。同時請盡快補領正式住戶證。」",
+          english:
+            'Resident: "I lost my resident card, but I need to enter and exit multiple times today. What should I do?"\nConcierge: "Please don\'t worry. Fill out the Temporary Access Log Form. We will verify your identity and issue a paper slip valid for today only. Please show it to security each time you enter or leave. Meanwhile, please apply for a replacement resident card as soon as possible."',
+          source: "表格申請·住戶證",
+        },
+
+        // ------------------- 拒絕暫收貨品.html (業戶 owner + 租戶 tenant) ------------------
+        {
+          id: "refuse_own01",
+          group: "owner",
+          title: "業戶·貴重物品及首飾",
+          chinese:
+            "陳太，很抱歉，公司政策列明禮賓司不得代收貴重物品如首飾、現金、名錶等。你可以請親友直接送到你手上，或使用大堂的智能儲物櫃（如有）。",
+          english:
+            "Mrs. Chan, I’m sorry, but company policy clearly states that the concierge cannot accept valuables such as jewellery, cash, or luxury watches. You may ask your friend or relative to hand them directly to you, or use the smart locker in the lobby.",
+          source: "拒絕暫收·業戶",
+        },
+        {
+          id: "refuse_own02",
+          group: "owner",
+          title: "業戶·鎖匙安全",
+          chinese:
+            "先生，鎖匙涉及單位保安，我們不能隨意代管，萬一遺失或複製會引起安全風險。建議你親自交給該單位的住戶，或放在你單位的密碼箱內。",
+          english:
+            "Sir, keys involve unit security. We cannot casually keep them, as loss or unauthorised duplication would create a security risk. We suggest you hand them directly to the resident of that unit, or put them in your own unit’s key safe.",
+          source: "拒絕暫收·業戶",
+        },
+        {
+          id: "refuse_own03",
+          group: "owner",
+          title: "業戶·大型梳化",
+          chinese:
+            "李生，這張梳化太大，無法放入禮賓部的儲物室。你可否安排搬運公司直接送上樓？我們可以為你預約送貨電梯。",
+          english:
+            "Mr. Li, this sofa is too large to fit into our concierge storage room. Could you arrange for the moving company to take it directly upstairs? We can help you book the delivery lift.",
+          source: "拒絕暫收·業戶",
+        },
+        {
+          id: "refuse_own04",
+          group: "owner",
+          title: "業戶·油畫無包裝",
+          chinese:
+            "王小姐，這幅油畫沒有包裝，畫面容易刮花，我們沒有恆溫恆濕環境存放。請你通知畫廊直接送到你的單位，或你下來親自簽收。",
+          english:
+            "Ms. Wong, this oil painting is unpackaged and easily scratched. We do not have a temperature and humidity controlled environment for storage. Please ask the gallery to deliver directly to your unit, or come down to sign for it in person.",
+          source: "拒絕暫收·業戶",
+        },
+        {
+          id: "refuse_own05",
+          group: "owner",
+          title: "業戶·現金信封",
+          chinese:
+            "先生，信封內若裝有現金，屬於貴重物品，禮賓司恕難代收。你可以請對方改用銀行轉帳，或你盡快下來領取，我們可以暫時保管15分鐘，但必須你本人在場見證。",
+          english:
+            "Sir, if this envelope contains cash, it is a valuable item. The concierge cannot accept it on your behalf. You may ask the sender to use bank transfer instead, or come down to collect it as soon as possible. We can keep it for 15 minutes, but you must be present to witness.",
+          source: "拒絕暫收·業戶",
+        },
+        {
+          id: "refuse_ten01",
+          group: "tenant",
+          title: "租戶·筆記本電腦",
+          chinese:
+            "租戶你好，筆記本電腦屬於貴重電子產品，禮賓司不設暫存服務。你可以使用大堂的智能櫃（如有），或請快遞員放進你的信箱（若體積許可）。",
+          english:
+            "Hello tenant, a laptop is a valuable electronic product. The concierge does not provide temporary storage for such items. You may use the smart locker in the lobby (if available), or ask the courier to put it in your mailbox (if size permits).",
+          source: "拒絕暫收·租戶",
+        },
+        {
+          id: "refuse_ten02",
+          group: "tenant",
+          title: "租戶·鎖匙保管",
+          chinese:
+            "租戶你好，按公契規定，管理處及禮賓司不保管任何單位的鎖匙。請你把鎖匙交給信任的親友，或使用大廈外的智能鎖匙箱。",
+          english:
+            "Hello tenant, according to the Deed of Mutual Covenant, the management office and concierge do not keep keys for any unit. Please give the keys to a trusted friend or relative, or use the smart key box outside the building.",
+          source: "拒絕暫收·租戶",
+        },
+        {
+          id: "refuse_ten03",
+          group: "tenant",
+          title: "租戶·工業吸塵機",
+          chinese:
+            "陳先生，這部工業吸塵機體積超出儲物室容量。你可否請搬運公司直接送上你單位？我們可以幫你按電梯。",
+          english:
+            "Mr. Chan, this industrial vacuum cleaner exceeds the storage room capacity. Could you ask the moving company to take it directly to your unit? We can help press the lift button for you.",
+          source: "拒絕暫收·租戶",
+        },
+        {
+          id: "refuse_ten04",
+          group: "tenant",
+          title: "租戶·陶瓷易碎",
+          chinese:
+            "小姐，這件陶瓷沒有氣泡膜包裝，我們沒有合適位置平放。為免破碎，請你親自下來接收，或要求快遞員改在晚上你回家時配送。",
+          english:
+            "Miss, this ceramic piece has no bubble wrap, and we have no suitable flat space to place it. To avoid breakage, please come down to receive it yourself, or ask the courier to deliver it in the evening when you are home.",
+          source: "拒絕暫收·租戶",
+        },
+        {
+          id: "refuse_ten05",
+          group: "tenant",
+          title: "租戶·全身鏡",
+          chinese:
+            "你好，這面全身鏡沒有木框，極易破裂。禮賓司無法承擔損壞責任。請你致電業主，看能否直接送上樓，或改在管理員見證下由送貨員送上門。",
+          english:
+            "Hello, this full-length mirror has no wooden frame and is very prone to breaking. The concierge cannot accept liability for damage. Please call the owner to see if you can take it directly upstairs, or have the delivery person bring it to the door under the witness of a security guard.",
+          source: "拒絕暫收·租戶",
+        },
+
+        // ------------------- 查詢.html (住戶一般查詢) ------------------
+        {
+          id: "inq01",
+          group: "resident",
+          title: "訪客接待查詢",
+          chinese:
+            "黃先生您好，有一位自稱是您親友的訪客在大堂。請問您是否方便接待？我可以請他登記後上樓。",
+          english:
+            "Good day, Mr. Wong, there is a visitor at the lobby claiming to be your relative. May I check if you are available to receive him? I can ask him to register and go up.",
+          source: "查詢·住戶",
+        },
+        {
+          id: "inq02",
+          group: "resident",
+          title: "大型快遞簽收",
+          chinese:
+            "張太您好，有一份大型快遞需要您親自簽收。請問您現在是否在家？",
+          english:
+            "Hello, Mrs. Cheung, there is a large parcel requiring your signature. Are you at home now?",
+          source: "查詢·住戶",
+        },
+        {
+          id: "inq03",
+          group: "resident",
+          title: "漏水檢查安排",
+          chinese:
+            "午安，李生。管理處收到您單位漏水的報告。請問現在方便安排工程人員入內檢查嗎？",
+          english:
+            "Good afternoon, Mr. Li. The management office has received your report of water leakage. Would it be convenient to send a maintenance team to inspect your unit now?",
+          source: "查詢·住戶",
+        },
+        {
+          id: "inq04",
+          group: "resident",
+          title: "停車場續約",
+          chinese:
+            "早安，林先生。您的停車場月租合約將於下週到期，請問需要為您續約嗎？",
+          english:
+            "Good morning, Mr. Lam. Your monthly parking contract will expire next week. Would you like to renew it?",
+          source: "查詢·住戶",
+        },
+        {
+          id: "inq05",
+          group: "resident",
+          title: "垃圾房清潔建議",
+          chinese:
+            "您好，感謝您對垃圾房清潔提出的建議。我們已經加強了清洗頻率，如有不足請再告訴我們。",
+          english:
+            "Hello, thank you for your suggestion regarding the cleaning of the refuse room. We have increased the cleaning frequency. Please let us know if there is still any issue.",
+          source: "查詢·住戶",
+        },
+        {
+          id: "inq06",
+          group: "resident",
+          title: "傭工臨時證延期",
+          chinese:
+            "周太，您家的傭工臨時出入證明天到期。請問是否需要為她辦理延期？",
+          english:
+            "Mrs. Chow, your domestic helper’s temporary access pass expires tomorrow. May I ask if you need to extend it?",
+          source: "查詢·住戶",
+        },
+        {
+          id: "inq07",
+          group: "resident",
+          title: "歡迎新住戶",
+          chinese:
+            "歡迎新住戶！請提供租約或買賣合約副本，以便我們更新住戶資料庫。",
+          english:
+            "Welcome new resident! Please provide a copy of your tenancy or sale agreement so we can update the resident database.",
+          source: "查詢·住戶",
+        },
+        {
+          id: "inq08",
+          group: "resident",
+          title: "冷氣滴水反映",
+          chinese:
+            "陳先生您好，有鄰居反映您單位外牆有冷氣滴水情況。請盡快安排師傅檢查，謝謝您的配合。",
+          english:
+            "Hello, Mr. Chan, a neighbor has reported water dripping from your air conditioner onto the exterior wall. Please arrange for a technician to check as soon as possible. Thank you for your cooperation.",
+          source: "查詢·住戶",
+        },
+        {
+          id: "inq09",
+          group: "resident",
+          title: "寵物公契規則",
+          chinese:
+            "李太您好，公契規定寵物出入公共區域必須繫上牽繩及戴上口罩。請問您已了解這項規則嗎？",
+          english:
+            "Hello, Mrs. Li, the deed of mutual covenant requires pets to be on a leash and wear a muzzle in common areas. May I confirm you are aware of this rule?",
+          source: "查詢·住戶",
+        },
+        {
+          id: "inq10",
+          group: "resident",
+          title: "信箱鎖損壞更換",
+          chinese:
+            "王太，我們發現您的信箱鎖有損壞。請問需要我們聯絡承辦商更換嗎？費用由住戶自付。",
+          english:
+            "Mrs. Wong, we noticed that your mailbox lock is damaged. Would you like us to contact a contractor for replacement? The cost will be borne by the resident.",
+          source: "查詢·住戶",
+        },
+        {
+          id: "inq11",
+          group: "resident",
+          title: "緊急按鈕求助",
+          chinese:
+            "您好，請問您是否致電求助？我們收到您單位的緊急按鈕訊號。現在派保安員上門，請保持電話暢通。",
+          english:
+            "Hello, did you just call for help? We have received an emergency button signal from your unit. We are now sending a security guard upstairs. Please keep your phone line open.",
+          source: "查詢·住戶",
+        },
+
+        // ==================== 新增 🌤️ 天氣提醒 (weather) ====================
+        {
+          id: "weather01",
+          group: "weather",
+          title: "下雨 (Rain)",
+          chinese: "禮賓司：「現在下雨了，出門請記得攜帶雨具，小心路面濕滑。」",
+          english:
+            'Concierge: "It\'s raining now. Please remember to bring an umbrella and watch out for slippery roads."',
+          source: "天氣提醒",
+        },
+        {
+          id: "weather02",
+          group: "weather",
+          title: "雷雨 (Thunderstorm)",
+          chinese:
+            "禮賓司：「雷雨交加，請盡量留在室內，避免使用電器並遠離窗戶。」",
+          english:
+            'Concierge: "There\'s a thunderstorm. Please stay indoors, avoid using electrical appliances, and keep away from windows."',
+          source: "天氣提醒",
+        },
+        {
+          id: "weather03",
+          group: "weather",
+          title: "下雪 (Snow)",
+          chinese:
+            "禮賓司：「正在下雪，路面可能結冰，開車請減速慢行，走路請注意防滑。」",
+          english:
+            'Concierge: "It\'s snowing. Roads may be icy. Please drive slowly and walk carefully to avoid slipping."',
+          source: "天氣提醒",
+        },
+        {
+          id: "weather04",
+          group: "weather",
+          title: "冰雹 (Hail)",
+          chinese: "禮賓司：「下冰雹了！請保護頭部，立即尋找安全的遮蔽處。」",
+          english:
+            'Concierge: "It\'s hailing! Please protect your head and find a safe shelter immediately."',
+          source: "天氣提醒",
+        },
+        {
+          id: "weather05",
+          group: "weather",
+          title: "霧 (Fog)",
+          chinese:
+            "禮賓司：「起霧了，能見度很低，駕駛請開啟霧燈、減速並保持安全車距。」",
+          english:
+            'Concierge: "It\'s foggy. Visibility is low. Please turn on your fog lights, slow down, and keep a safe distance."',
+          source: "天氣提醒",
+        },
+        {
+          id: "weather06",
+          group: "weather",
+          title: "霾 / 空氣污染 (Haze / Air Pollution)",
+          chinese:
+            "禮賓司：「霾害嚴重，空氣品質不佳，建議減少戶外活動，外出請配戴口罩。」",
+          english:
+            'Concierge: "The haze is heavy and air quality is poor. It\'s advisable to reduce outdoor activities and wear a mask if you go out."',
+          source: "天氣提醒",
+        },
+        {
+          id: "weather07",
+          group: "weather",
+          title: "颱風 (Typhoon)",
+          chinese:
+            "禮賓司：「颱風正在來襲，請做好防颱準備，固定戶外物品，避免外出。」",
+          english:
+            'Concierge: "A typhoon is approaching. Please take typhoon precautions, secure outdoor items, and avoid going outside."',
+          source: "天氣提醒",
+        },
+        {
+          id: "weather08",
+          group: "weather",
+          title: "暴風雨 (Storm)",
+          chinese:
+            "禮賓司：「暴風雨即將來臨，請遠離海岸與河邊，並留在堅固的建築物內。」",
+          english:
+            'Concierge: "A storm is coming. Please stay away from coasts and rivers, and remain inside a sturdy building."',
+          source: "天氣提醒",
+        },
+        {
+          id: "weather09",
+          group: "weather",
+          title: "酷熱 / 熱浪 (Extreme Heat / Heatwave)",
+          chinese:
+            "禮賓司：「天氣非常炎熱，請多補充水分，避免長時間日曬，預防中暑。」",
+          english:
+            'Concierge: "It\'s extremely hot. Please stay hydrated, avoid prolonged sun exposure, and prevent heatstroke."',
+          source: "天氣提醒",
+        },
+        {
+          id: "weather10",
+          group: "weather",
+          title: "寒流 / 嚴寒 (Cold Wave / Freezing Cold)",
+          chinese:
+            "禮賓司：「氣溫驟降，天氣嚴寒，請注意保暖，多穿衣物並關心長者與幼童。」",
+          english:
+            'Concierge: "Temperatures are dropping sharply. It\'s freezing cold. Please keep warm, dress in layers, and check on the elderly and children."',
+          source: "天氣提醒",
+        },
+        {
+          id: "weather11",
+          group: "weather",
+          title: "凍雨 / 冰雨 (Freezing Rain)",
+          chinese:
+            "禮賓司：「下凍雨了，路面會迅速結冰，非常濕滑，請避免外出，行走務必小心。」",
+          english:
+            'Concierge: "Freezing rain is falling. Roads will ice up quickly and become extremely slippery. Please avoid going out, and if you must walk, be very careful."',
+          source: "天氣提醒",
+        },
+        {
+          id: "weather12",
+          group: "weather",
+          title: "大風 / 強風 (Strong Wind / Gale)",
+          chinese:
+            "禮賓司：「強風來襲，請固定或收起陽台物品，注意高空墜物，遠離招牌與大樹。」",
+          english:
+            'Concierge: "Strong winds are coming. Please secure or bring in balcony items, watch out for falling objects, and stay away from signs and large trees."',
+          source: "天氣提醒",
+        },
+        {
+          id: "weather13",
+          group: "weather",
+          title: "沙塵暴 (Sandstorm / Dust Storm)",
+          chinese:
+            "禮賓司：「沙塵暴已經發生，請待在室內，緊閉門窗，外出務必戴防護面罩或口罩。」",
+          english:
+            'Concierge: "A dust storm is occurring. Please stay indoors, close all windows and doors, and wear a protective mask if you must go outside."',
+          source: "天氣提醒",
+        },
+        {
+          id: "weather14",
+          group: "weather",
+          title: "龍捲風 (Tornado)",
+          chinese:
+            "禮賓司：「龍捲風警報！請立刻躲入地下室或沒有窗戶的室內空間，遠離門窗。」",
+          english:
+            'Concierge: "Tornado warning! Take shelter immediately in a basement or an interior room without windows. Stay away from doors and windows."',
+          source: "天氣提醒",
+        },
+        {
+          id: "weather15",
+          group: "weather",
+          title: "陰天 (Overcast)",
+          chinese:
+            "禮賓司：「天色陰沉，可能快要下雨了，隨身帶把傘會比較保險。」",
+          english:
+            'Concierge: "It\'s overcast. It might rain soon. Better carry an umbrella just in case."',
+          source: "天氣提醒",
+        },
+        {
+          id: "weather16",
+          group: "weather",
+          title: "晴朗 / 紫外線過量 (Sunny / Extreme UV)",
+          chinese:
+            "禮賓司：「陽光強烈，紫外線過量，外出請擦防曬、戴帽子與太陽眼鏡。」",
+          english:
+            'Concierge: "The sun is strong with extreme UV levels. Please apply sunscreen, wear a hat and sunglasses when going out."',
+          source: "天氣提醒",
+        },
+      ];
+
+      // 渲染篩選
+      function renderByFilter(filterType) {
+        let filtered = [];
+        if (filterType === "all") filtered = [...allDialogues];
+        else
+          filtered = allDialogues.filter((item) => item.group === filterType);
+
+        const container = document.getElementById("cardsContainer");
+        const counterSpan = document.getElementById("counterSpan");
+        counterSpan.innerText = `${filtered.length} 項對話`;
+
+        if (filtered.length === 0) {
+          container.innerHTML = `<div class="empty-state">📌 目前沒有「${filterType}」相關對話，請切換其他分類</div>`;
+          return;
+        }
+
+        let cardsHtml = "";
+        filtered.forEach((item) => {
+          let groupLabel = "";
+          if (item.group === "resident") groupLabel = "🏠 住戶";
+          else if (item.group === "residentcard") groupLabel = "🪪 住戶證";
+          else if (item.group === "owner") groupLabel = "👑 業戶";
+          else if (item.group === "tenant") groupLabel = "📄 租戶";
+          else if (item.group === "weather") groupLabel = "🌤️ 天氣";
+          cardsHtml += `
+                <div class="dialogue-card">
+                    <div class="card-header">
+                        <div class="card-title">${escapeHtml(item.title)}</div>
+                        <div class="tag-group">
+                            <span class="tag">${groupLabel}</span>
+                            <span class="tag tag-source">📁 ${escapeHtml(item.source)}</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="dialog-zh">📖 ${escapeHtml(item.chinese).replace(/\n/g, "<br>")}</div>
+                        <div class="dialog-en">🇬🇧 ${escapeHtml(item.english).replace(/\n/g, "<br>")}</div>
+                        <div class="small-meta">AGSO 專業應對 · 物業管理筆記</div>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = cardsHtml;
+      }
+
+      function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, function (m) {
+          if (m === "&") return "&amp;";
+          if (m === "<") return "&lt;";
+          if (m === ">") return "&gt;";
+          return m;
+        });
+      }
+
+      // 選單事件
+      function initFilters() {
+        const btns = document.querySelectorAll(".filter-btn");
+        btns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const filterVal = btn.getAttribute("data-filter");
+            btns.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            renderByFilter(filterVal);
+          });
+        });
+      }
+
+      // 預設顯示全部
+      renderByFilter("all");
+      initFilters();
+    </script>
+  </body>
+</html>
